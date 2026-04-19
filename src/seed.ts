@@ -4,6 +4,7 @@ import bcrypt from 'bcryptjs';
 const prisma = new PrismaClient();
 
 async function main() {
+  // 1. Seed Admin User
   const email = 'admin@naturefresh.com';
   const password = 'admin2123';
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -18,8 +19,64 @@ async function main() {
     },
   });
 
-  console.log('Admin user created:', user.email);
-  console.log('Password:', password);
+  console.log('Admin user verified:', user.email);
+
+  // 2. Clear existing products (optional, but good for "real data" switch)
+  await prisma.product.deleteMany({});
+
+  // 3. Seed Real Seafood Products
+  const products = [
+    {
+      name: 'Yellowfin Tuna (Thunnus albacares)',
+      description: 'Premium export-grade Yellowfin Tuna, sustainably caught and flash-frozen to maintain sashimi quality. Rich in Omega-3.',
+      category: 'Fish',
+      photoUrl: 'https://images.unsplash.com/photo-1599058917233-33230f252601?auto=format&fit=crop&q=80&w=800',
+      status: 'In Stock'
+    },
+    {
+      name: 'Black Tiger Shrimp (Penaeus monodon)',
+      description: 'Large, succulent Black Tiger Shrimp, perfect for grilling or fine dining. Sustainably farmed and processed for global export.',
+      category: 'Shrimp',
+      photoUrl: 'https://images.unsplash.com/photo-1559737558-2f5a35f4523b?auto=format&fit=crop&q=80&w=800',
+      status: 'In Stock'
+    },
+    {
+      name: 'Blue Swimmer Crab',
+      description: 'Sweet, tender meat from the best Blue Swimmer Crabs. Cleaned and prepared under strict hygiene standards for international markets.',
+      category: 'Other',
+      photoUrl: 'https://images.unsplash.com/photo-1551462147-37885acc3c41?auto=format&fit=crop&q=80&w=800',
+      status: 'In Stock'
+    },
+    {
+      name: 'Spanish Mackerel (King Fish)',
+      description: 'Firm-textured and rich in flavor, our Spanish Mackerel is a favorite in international markets for its versatility and taste.',
+      category: 'Fish',
+      photoUrl: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&q=80&w=800',
+      status: 'In Stock'
+    },
+    {
+      name: 'Premium Cuttlefish',
+      description: 'Tender and flavorful Cuttlefish, ideal for gourmet seafood dishes. Processed under strict HACCP standards for maximum freshness.',
+      category: 'Other',
+      photoUrl: 'https://images.unsplash.com/photo-1582450871972-ab5ca641643d?auto=format&fit=crop&q=80&w=800',
+      status: 'In Stock'
+    },
+    {
+      name: 'Red Snapper',
+      description: 'Freshly caught Red Snapper with a mild, sweet flavor. High in protein and perfect for premium retail or restaurant supply.',
+      category: 'Fish',
+      photoUrl: 'https://images.unsplash.com/photo-1534604973900-c41ab4c5d4b0?auto=format&fit=crop&q=80&w=800',
+      status: 'In Stock'
+    }
+  ];
+
+  for (const product of products) {
+    await prisma.product.create({
+      data: product,
+    });
+  }
+
+  console.log('Seeded 6 real seafood products successfully.');
 }
 
 main()
