@@ -7,6 +7,7 @@ import blogRoutes from './routes/blog';
 import uploadRoutes from './routes/upload';
 import authRoutes from './routes/auth';
 import productRoutes from './routes/product';
+import quoteRoutes from './routes/quote';
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ app.use('/api/blog', blogRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
+app.use('/api/quotes', quoteRoutes);
 
 app.get('/', (req, res) => {
   res.send('Nature Fresh Foods Admin API');

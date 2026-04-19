@@ -59,4 +59,18 @@ model Product {
   status      String   @default("In Stock")
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  quotes      Quote[]
+}
+
+model Quote {
+  id          Int      @id @default(autoincrement())
+  name        String
+  company     String
+  email       String
+  quantity    String
+  productId   Int
+  productName String
+  status      String   @default("Pending")
+  createdAt   DateTime @default(now())
+  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
