@@ -10,6 +10,14 @@ router.get('/', async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch products' });
   }
+router.get('/:id', async (req, res) => {
+  try {
+    const product = await prisma.product.findUnique({ where: { id: parseInt(req.params.id) } });
+    if (!product) return res.status(404).json({ error: 'Product not found' });
+    res.json(product);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch product' });
+  }
 });
 
 router.post('/', async (req, res) => {
